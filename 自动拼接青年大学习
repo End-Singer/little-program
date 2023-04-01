@@ -1,0 +1,22 @@
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+path = 'D:\Python-learning\青年大学习'
+img_list = []
+for file_name in os.listdir(path):
+    file_path = os.path.join(path, file_name)
+    img_list.append(file_path)
+
+im1 = Image.open(img_list[0])
+im2 = Image.open(img_list[1])
+w, h = im1.size
+# Image.new('RGB/RGBA', (w, h), (0-255, 0-255, 0-255))
+newim = Image.new('RGB', (w * 2, h), (255, 255, 255))  # 新建空白图片
+newim.paste(im1, (0, 0))
+im2 = im2.resize(im1.size)
+newim.paste(im2, (w, 0))
+draw = ImageDraw.Draw(newim)
+Black_font = ImageFont.truetype('C:\Windows\Fonts\STSONG.TTF', w // 10)
+draw.text((w/2, h * (4 / 5)), 'xxx-xxx', fill='black', font=Black_font)
+newim.show()
+newim.save('D:\Python-learning\青年大学习\xxx.jpg')
