@@ -1,0 +1,46 @@
+import random
+def play_24_game(numbers):
+    """
+    给定4个数字，返回是否可以通过四则运算得到结果24
+    """
+    if not numbers:
+        return False
+    if len(numbers) == 1:
+        return abs(numbers[0] - 24) < 1e-6
+    for i in range(len(numbers)):
+        for j in range(len(numbers)):
+            if i == j:
+                continue
+            a, b = numbers[i], numbers[j]
+            rest = [numbers[k] for k in range(len(numbers)) if k != i and k != j]
+            if play_24_game(rest + [a + b]):
+                return True
+            if play_24_game(rest + [a - b]):
+                return True
+            if play_24_game(rest + [b - a]):
+                return True
+            if play_24_game(rest + [a * b]):
+                return True
+            if abs(b) > 1e-6 and play_24_game(rest + [a / b]):
+                return True
+            if abs(a) > 1e-6 and play_24_game(rest + [b / a]):
+                return True
+    return False
+
+# 生成四张牌
+cards = [random.randint(1, 10) for _ in range(4)]
+
+# 打印出这四张牌
+print("四张牌：", cards)
+
+# 判断是否能够得到24点
+if play_24_game(cards):
+    print("可以得到24点")
+else:
+    print("无法得到24点")
+
+# 这里使用了递归函数来判断给定的四张牌能否通过四则运算得到结果24。
+# 具体来说，首先将给定的四张牌分成两组，分别进行四则运算，得到一个新的数字和剩下的三张牌，
+# 然后再递归地判断能否通过四则运算得到结果24。如果能得到，就返回True，否则继续尝试其他运算。
+# 注意，由于浮点数在计算机中是以近似值表示的，因此在比较两个浮点数是否相等时，应该使用类似 的方法，
+# 而不是直接使用 。abs(a - b) < 1e-6a == b
